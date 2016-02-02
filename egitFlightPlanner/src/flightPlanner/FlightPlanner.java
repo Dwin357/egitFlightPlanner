@@ -16,6 +16,7 @@ public class FlightPlanner {
 	
 	public FlightPlanner(String filePath) {
 		super();
+		airports = new HashMap<String, Airport>();
 		airportsFromCSV(filePath);
 	}
 	
@@ -29,6 +30,7 @@ public class FlightPlanner {
 		while(sc.hasNext()){
 			addFlight(sc.next());
 		}
+		sc.close();
 	  } catch (FileNotFoundException e) {
 		  
 	  }
@@ -39,44 +41,18 @@ public class FlightPlanner {
 		return false;
 	}
 	
-	private void addFlight(String connectionDetails){
-		// 1) parse data from input string
-		connectionArgFromLine(connectionDetails);
-		// 2) make connection from data
-		// 3) find-or-create airport based on origin
-		// 4) airport.add(connection)
-//		System.out.println(parseDataFromLine(connectionDetails));
-	}
+	private void addFlight(String line){
+		Connection connection = Connection.connectionFromLine(line);
+		Airport airport = findOrCreateAirport(connection.getOrigin());
+		airport.addConnection(connection);
+	}	
 	
-	private String[] connectionArgFromLine(String line){
-		line = chompComma(line);
-		
-		String[] workInProgress = splitDistance(line);
-		String distance = workInProgress[0];
-		
-		workInProgress = splitLocations(workInProgress[1]);
-		String _from = workInProgress[0];
-		String _to = workInProgress[1];
-		
-		String[] connectionArg = {_from, _to, distance};
-		return connectionArg;
-	}
-	
-	private String chompComma(String line){
-		int indexLast = line.length();
-		if (indexLast > 0 && line.substring(indexLast-1, indexLast).equals(",")){
-			line = line.substring(0, indexLast-1);
-		}
-		return line;
-	}
-	
-	private String[] splitDistance(String line){
-		String[] temp = line.split("(?<=\\D)(?=\\d)");
-		String[] rtn = { temp[1], temp[0] };
-		return rtn;
-	}
-	
-	private String[] splitLocations(String line){
-		return line.split("(?<!^)(?=[A-Z])");
+	private Airport findOrCreateAirport(String name){	
+		Airport airport = airports.get(name);
+		if(airport == null){
+			airport = new Airport(name);
+			airports.put(name, airport);
+		}	
+		return airport;
 	}
 }
