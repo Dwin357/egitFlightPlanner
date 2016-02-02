@@ -49,9 +49,9 @@ public class AirportTest {
 		assertFalse(subjectWithoutConnection.hasConnection("Dallas"));
 		assertTrue(subjectWithConnection.hasConnection("Dallas"));
 	}
-//
 
-//
-
-
+	@Test
+	public void testGetName(){
+		assertEquals("Ohare", subjectWithConnection.getName());
+	}
 }

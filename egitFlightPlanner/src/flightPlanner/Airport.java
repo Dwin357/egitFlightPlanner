@@ -29,5 +29,9 @@ public class Airport {
 	public void addConnection(Connection newConnection){
 		connections.put(newConnection.getDestination(), newConnection);
 	}
+	
+	public String getName(){
+		return name;
+	}
 
 }
