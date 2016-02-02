@@ -19,7 +19,8 @@ public class Application {
 		
 		String txtName = "/home/dwin357/Desktop/graph.txt";
 		
-		FlightPlanner planner = new FlightPlanner(txtName);
+		FlightPlanner planner = new FlightPlanner("testGraph");
+//		planner.
 		
 		String text = "CamelCase";
 //		text.for

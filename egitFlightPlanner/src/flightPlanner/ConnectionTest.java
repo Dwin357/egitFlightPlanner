@@ -19,6 +19,19 @@ public class ConnectionTest {
 	}
 	
 	@Test
+	public void testConnectionFromLine(){
+		String expectedArgs = "HardCase400";
+		String alternateArgs = "CommaTest32,";
+		Connection subject1 = Connection.connectionFromLine(expectedArgs);
+		Connection subject2 = Connection.connectionFromLine(alternateArgs);
+		
+		assertEquals("Hard", subject1.getOrigin());
+		assertEquals("Case", subject1.getDestination());
+		assertEquals("Test", subject2.getDestination());
+		assertEquals(400, subject1.getFuelCost());
+	}
+	
+	@Test
 	public void testGetOrigin(){
 		assertEquals("Ohare", simple_subject.getOrigin());
 	}

@@ -33,5 +33,9 @@ public class Airport {
 	public String getName(){
 		return name;
 	}
+	
+	public int connectionFuelCost(String connectionName){
+		return connections.get(connectionName).getFuelCost();
+	}
 
 }

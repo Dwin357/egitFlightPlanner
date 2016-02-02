@@ -1,10 +1,12 @@
 package flightPlanner;
-
+// Next Steps / Coding Assignment
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Set;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -17,28 +19,58 @@ public class FlightPlanner {
 	public FlightPlanner(String filePath) {
 		super();
 		airports = new HashMap<String, Airport>();
-		airportsFromCSV(filePath);
+		fromCSVPath(filePath);
 	}
 	
-	private void airportsFromCSV(String filePath) {
-	  try {
-		Scanner sc = new Scanner(new File(filePath));
+	public FlightPlanner(File file) {
+		super();
+		airports = new HashMap<String, Airport>();
+		try {
+			fromCSVFile(file);
+		} catch (FileNotFoundException e){
+			System.out.println("bad file provided at load" + e);
+		}
+	}
+	
+	public int fuelCostForTrip(String trip){
+		int fuelCost = 0;
+		String[] stops = trip.split("-");
+		Airport departingFrom = airports.get(stops[0]);
+		for(int i = 1; i < stops.length; i++){
+			if (departingFrom != null && departingFrom.hasConnection(stops[i])) {
+				fuelCost += departingFrom.connectionFuelCost(stops[i]);
+				departingFrom = airports.get(stops[i]);
+			} else {
+				return -1;
+			}
+		}
+		return fuelCost;
+	}
+	
+	private void fromCSVPath(String csvPath) {
+		try {
+			fromCSVFile(new File(csvPath));
+		} catch (FileNotFoundException e) {
+			System.out.println("bad file path: " + e);
+		}
+	}
+	
+	private void fromCSVFile(File csv) 
+	  throws FileNotFoundException {
+		Scanner sc = new Scanner(csv);
 		String line = sc.next();
-		if (notHeaders(line)){
+		if (!Headers(line)){
 			addFlight(line);
 		}
 		while(sc.hasNext()){
 			addFlight(sc.next());
 		}
 		sc.close();
-	  } catch (FileNotFoundException e) {
-		  
-	  }
 	}
 	
-	private boolean notHeaders(String fileLine){
+	private boolean Headers(String fileLine){
 		// as this becomes able to recognize more complex csvs, this will come up
-		return false;
+		return true;
 	}
 	
 	private void addFlight(String line){
@@ -54,5 +86,11 @@ public class FlightPlanner {
 			airports.put(name, airport);
 		}	
 		return airport;
+	}
+	
+	public String[] collectAirports(){
+//		this is just for testing load
+		String[] ports = airports.keySet().toArray(new String[airports.keySet().size()]);
+		return ports;
 	}
 }

@@ -54,4 +54,9 @@ public class AirportTest {
 	public void testGetName(){
 		assertEquals("Ohare", subjectWithConnection.getName());
 	}
+	
+	@Test
+	public void testConnectionFuelCost(){
+		assertEquals(200, subjectWithConnection.connectionFuelCost("Dallas"));
+	}
 }
