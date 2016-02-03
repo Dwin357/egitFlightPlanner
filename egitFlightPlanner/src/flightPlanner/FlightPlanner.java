@@ -1,5 +1,5 @@
 package flightPlanner;
-// Next Steps / Coding Assignment
+// Next Steps / Coding Assignment :: 10/28
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import org.apache.commons.csv.CSVParser;
 public class FlightPlanner {
 	
 	private HashMap<String, Airport> airports;
-	private Connection[][] efficientRoutes;
+	private Trip[][] efficientRoutes;
 	
 	public FlightPlanner(String filePath) {
 		super();
@@ -93,4 +93,14 @@ public class FlightPlanner {
 		String[] ports = airports.keySet().toArray(new String[airports.keySet().size()]);
 		return ports;
 	}
+	
+//	public int tripsWithinNLayovers(String origin, String destination, int layovers){
+//		int count = -1;
+//		
+//		return count;
+//	}
+//	
+//	private ArrayList<Trip> accumulateTripsWithinParameters(String origin String destination, int layovers, int fuelCost){
+//		
+//	}
 }
