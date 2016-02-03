@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import org.apache.commons.csv.CSVFormat;
@@ -20,7 +22,16 @@ public class Application {
 		String txtName = "/home/dwin357/Desktop/graph.txt";
 		
 		FlightPlanner planner = new FlightPlanner("testGraph");
-//		planner.
+		
+		HashMap<String, Airport> test = planner.getAirports();
+		
+		for(Map.Entry<String, Airport> airport : test.entrySet()){ 
+			System.out.println(airport.getKey() + " key value");
+//			System.out.println(airport.getValue().getName() + " method on obj");
+//			System.out.println(airport.getValue().hasConnection("D") + " connects to D?");
+		}
+
+		
 		
 		String text = "CamelCase";
 //		text.for

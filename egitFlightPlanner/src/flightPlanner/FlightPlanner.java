@@ -16,6 +16,15 @@ public class FlightPlanner {
 	private HashMap<String, Airport> airports;
 	private Trip[][] efficientRoutes;
 	
+	//////////////  remove when done ///////////////
+	
+	public HashMap<String, Airport> getAirports(){
+		return airports;
+	}
+	
+	
+	/////////////////////////////////////////////////
+	
 	public FlightPlanner(String filePath) {
 		super();
 		airports = new HashMap<String, Airport>();
@@ -28,7 +37,7 @@ public class FlightPlanner {
 		try {
 			fromCSVFile(file);
 		} catch (FileNotFoundException e){
-			System.out.println("bad file provided at load" + e);
+			System.out.println("bad file provided at load: " + e);
 		}
 	}
 	
@@ -100,7 +109,13 @@ public class FlightPlanner {
 //		return count;
 //	}
 //	
-//	private ArrayList<Trip> accumulateTripsWithinParameters(String origin String destination, int layovers, int fuelCost){
+//	private ArrayList<Trip> accumulateTripsWithinParameters(){
+//		
+//		
+//		return qualifyingTrips;
+//	}
+//	
+//	private ArrayList<Trip> accumulateTripsWithinParameters(String origin, String destination, int layovers, int fuelCost, ArrayList<Trip> accumulated){
 //		
 //	}
 }

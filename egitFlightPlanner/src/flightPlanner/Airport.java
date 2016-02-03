@@ -38,4 +38,8 @@ public class Airport {
 		return connections.get(connectionName).getFuelCost();
 	}
 
+	public String[] gatherConnections(){
+		String[] ports = connections.keySet().toArray(new String[connections.keySet().size()]);
+		return ports;
+	}
 }
