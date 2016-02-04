@@ -3,7 +3,7 @@ package flightPlanner;
 public class Layover extends Trip {
 	private String layovers;
 	
-	private Layover(String origin, String destination, int fuelCost, String layovers){
+	public Layover(String origin, String destination, int fuelCost, String layovers){
 		super(origin, destination, fuelCost);
 		this.layovers = layovers;
 	}
@@ -29,43 +29,33 @@ public class Layover extends Trip {
 		return layover;
 	}
 	
-	public static Layover appendConnection(Layover currentPath, Connection newConnection){
-		String origin 		= currentPath.getOrigin();
-		String destination 	= newConnection.getDestination();
-		int fuelCost		= currentPath.getFuelCost() + newConnection.getFuelCost();
-		String layovers;
+	public void appendConnection(Connection newConnection){
+		this.destination 	= newConnection.getDestination();
+		this.fuelCost		= getFuelCost() + newConnection.getFuelCost();
 		
-		if(currentPath.getLayovers() == null){
-			layovers = "";
-		} else if(currentPath.getLayovers().equals("")){
-			layovers = currentPath.getDestination();
+		if(getLayovers() == null){
+			this.layovers = "";
+		} else if(getLayovers().equals("")){
+			this.layovers = newConnection.getOrigin();
 		} else {
-			layovers = currentPath.getLayovers() + "-" + currentPath.getDestination();
+			this.layovers = getLayovers() + "-" + newConnection.getOrigin();
 		}
-		
-		Layover layover = new Layover(origin, destination, fuelCost, layovers);
-		return layover;
 	}
 	
-	public static Layover prependConnection(Layover currentPath, Connection newConnection){
-		String origin 		= newConnection.getOrigin();
-		String destination 	= currentPath.getDestination();
-		int fuelCost		= currentPath.getFuelCost() + newConnection.getFuelCost();
-		String layovers;
+	public void prependConnection(Connection newConnection){
+		this.origin 		= newConnection.getOrigin();
+		this.fuelCost		= getFuelCost() + newConnection.getFuelCost();
 			
-		if(currentPath.getLayovers()==null){
+		if(getLayovers()==null){
 			// moving from 1 point to two
-			layovers = "";
-		} else if(currentPath.getLayovers().equals("")){
+			this.layovers = "";
+		} else if(getLayovers().equals("")){
 			// moving from 2 points to 3
-			layovers = currentPath.getOrigin();
+			this.layovers = newConnection.getDestination();
 		} else{
 			// moving from 3+ points to n+1
-			layovers = currentPath.getOrigin() + "-" + currentPath.getLayovers();
+			this.layovers = newConnection.getDestination() + "-" + getLayovers();
 		}
-		
-		Layover layover = new Layover(origin, destination, fuelCost, layovers);
-		return layover;		
 	}
 	
 	public static Layover origin(String location){

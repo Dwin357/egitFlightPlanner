@@ -30,10 +30,11 @@ public class LayoverTest {
 	
 	@Test
 	public void testGetLayovers(){
-		Layover subject1 = Layover.addConnections(sample1, sample2);
-		Layover subject2 = Layover.appendConnection(subject1,  sample3);
-		assertEquals("Ohare", subject1.getLayovers());
-		assertEquals("Ohare-Denver", subject2.getLayovers());
+		Layover subject = Layover.addConnections(sample1, sample2);
+		assertEquals("Ohare", subject.getLayovers());
+		
+		subject.appendConnection(sample3);
+		assertEquals("Ohare-Denver", subject.getLayovers());
 	}
 	
 	@Test
@@ -74,32 +75,35 @@ public class LayoverTest {
 	
 	@Test
 	public void testAppendConnection() {
-		Layover origin = Layover.origin("Dallas");
-		Layover subject1 = Layover.appendConnection(origin, sample1);
-		Layover subject2 = Layover.appendConnection(subject1, sample2);
-		Layover subject3 = Layover.appendConnection(subject2, sample3);
+		Layover subject = Layover.origin("Dallas");
+				subject.appendConnection(sample1);
+				subject.appendConnection(sample2);
+		assertEquals("Ohare", subject.getLayovers());
 		
-		assertEquals("Dallas", subject3.getOrigin());
-		assertEquals("Seatle", subject3.getDestination());
-		assertEquals("Ohare-Denver", subject3.getLayovers());
-		assertEquals(600, subject3.getFuelCost());
+		subject.appendConnection(sample3);		
+		assertEquals("Dallas", subject.getOrigin());
+		assertEquals("Seatle", subject.getDestination());
+		assertEquals("Ohare-Denver", subject.getLayovers());
+		assertEquals(600, subject.getFuelCost());
 		
-		assertEquals("Ohare", subject2.getLayovers());
+
 	}
 	
 	@Test
 	public void testPrependConnection(){
-		Layover origin = Layover.origin("Seatle");
-		Layover subject1 = Layover.prependConnection(origin, sample3);
-		Layover subject2 = Layover.prependConnection(subject1, sample2);
-		Layover subject3 = Layover.prependConnection(subject2, sample1);
+		Layover subject = Layover.origin("Seatle");
+				subject.prependConnection(sample3);
+				subject.prependConnection(sample2);
+			assertEquals("Denver", subject.getLayovers());
+				
+				subject.prependConnection(sample1);
 		
-		assertEquals("Dallas", subject3.getOrigin());
-		assertEquals("Seatle", subject3.getDestination());
-		assertEquals("Ohare-Denver", subject3.getLayovers());
-		assertEquals(600, subject3.getFuelCost());
+		assertEquals("Dallas", subject.getOrigin());
+		assertEquals("Seatle", subject.getDestination());
+		assertEquals("Ohare-Denver", subject.getLayovers());
+		assertEquals(600, subject.getFuelCost());
 		
-		assertEquals("Denver", subject2.getLayovers());
+		
 	}
 
 }

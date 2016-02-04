@@ -21,15 +21,25 @@ public class Application {
 		
 		String txtName = "/home/dwin357/Desktop/graph.txt";
 		
-		FlightPlanner planner = new FlightPlanner("testGraph");
+//		FlightPlanner planner = new FlightPlanner("testGraph");
 		
-		HashMap<String, Airport> test = planner.getAirports();
+//		HashMap<String, Airport> test = planner.getAirports();
 		
-		for(Map.Entry<String, Airport> airport : test.entrySet()){ 
-			System.out.println(airport.getKey() + " key value");
+		String[] testCase = {"a", "b", null, "c"};
+		String[] alt = testCase;
+		int bomb = Integer.parseInt(alt[2]);
+//		System.out.println(alt);
+		for(int i = 0; i < 4; i++){
+			if((alt[i]!=null)){
+				System.out.println(alt[i]);
+			}
+		}
+		
+//		for(Map.Entry<String, Airport> airport : test.entrySet()){ 
+//			System.out.println(airport.getKey() + " key value");
 //			System.out.println(airport.getValue().getName() + " method on obj");
 //			System.out.println(airport.getValue().hasConnection("D") + " connects to D?");
-		}
+//		}
 
 		
 		

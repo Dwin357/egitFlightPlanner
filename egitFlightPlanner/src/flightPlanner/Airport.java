@@ -26,6 +26,10 @@ public class Airport {
 		return connections.get(request);
 	}
 	
+	public HashMap<String, Connection> getConnections(){
+		return connections;
+	}
+	
 	public void addConnection(Connection newConnection){
 		connections.put(newConnection.getDestination(), newConnection);
 	}
