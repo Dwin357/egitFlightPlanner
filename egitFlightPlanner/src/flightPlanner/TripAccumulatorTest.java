@@ -21,13 +21,13 @@ public class TripAccumulatorTest {
 
 	
 	
-//	@Test
-//	public void testAccumulate() {
-//		TripAccumulator subject = ;
-//		ArrayList<Layover> output = subject.accumulate();
-//		System.out.println(output);
-//		assertEquals(1, output.size());
-//	}
+	@Test
+	public void testAccumulate() {
+		
+		ArrayList<Layover> output = publicSubject.accumulate();
+		System.out.println(output);
+		assertEquals(1, output.size());
+	}
 
 	
 	@Test
@@ -80,5 +80,10 @@ public class TripAccumulatorTest {
 		assertFalse(publicSubject.paramInBounds(inputFalse3));
 		assertFalse(publicSubject.paramInBounds(nullFuelFalse));
 		assertFalse(publicSubject.paramInBounds(nullLayoverFalse));
+	}
+	
+	@Test
+	public void testNotateCurrentLocation(){
+		
 	}
 }
