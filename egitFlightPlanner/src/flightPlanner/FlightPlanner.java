@@ -103,19 +103,5 @@ public class FlightPlanner {
 		return ports;
 	}
 	
-//	public int tripsWithinNLayovers(String origin, String destination, int layovers){
-//		int count = -1;
-//		
-//		return count;
-//	}
-//	
-//	private ArrayList<Trip> accumulateTripsWithinParameters(){
-//		
-//		
-//		return qualifyingTrips;
-//	}
-//	
-//	private ArrayList<Trip> accumulateTripsWithinParameters(String origin, String destination, int layovers, int fuelCost, ArrayList<Trip> accumulated){
-//		
-//	}
+	
 }

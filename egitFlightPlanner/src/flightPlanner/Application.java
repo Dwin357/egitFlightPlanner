@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -21,19 +22,26 @@ public class Application {
 		
 		String txtName = "/home/dwin357/Desktop/graph.txt";
 		
-//		FlightPlanner planner = new FlightPlanner("testGraph");
+		FlightPlanner planner = new FlightPlanner("testGraph");
+		String[] sample = {"C", "C", null, "3"};
+//		TripAccumulator subject = new TripAccumulator(sample, planner.getAirports());
+		TripAccumulator subject = new TripAccumulator("C", "C", planner.getAirports());
+		ArrayList<Layover> rtn = subject.accumulateWithinLayoverLimitN(4);
+		for(Layover layover : rtn){
+			System.out.println(layover.getFullPath());
+		}
 		
 //		HashMap<String, Airport> test = planner.getAirports();
 		
-		String[] testCase = {"a", "b", null, "c"};
-		String[] alt = testCase;
-		int bomb = Integer.parseInt(alt[2]);
-//		System.out.println(alt);
-		for(int i = 0; i < 4; i++){
-			if((alt[i]!=null)){
-				System.out.println(alt[i]);
-			}
-		}
+//		String[] testCase = {"a", "b", null, "c"};
+//		String[] alt = testCase;
+//		int bomb = Integer.parseInt(alt[2]);
+////		System.out.println(alt);
+//		for(int i = 0; i < 4; i++){
+//			if((alt[i]!=null)){
+//				System.out.println(alt[i]);
+//			}
+//		}
 		
 //		for(Map.Entry<String, Airport> airport : test.entrySet()){ 
 //			System.out.println(airport.getKey() + " key value");

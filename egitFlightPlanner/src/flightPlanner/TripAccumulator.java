@@ -5,29 +5,40 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TripAccumulator extends Trip {
-	private int layovers;
 	private HashMap<String, Airport> airports;
 	private ArrayList<Layover> routes;
 
-	public TripAccumulator(String origin, String destination, int fueLimit, int layoverLimit, HashMap<String, Airport>airports) {
-		super(origin, destination, fueLimit);
-		this.layovers = layoverLimit;
+	public TripAccumulator(String origin, String destination, HashMap<String, Airport>airports) {
+		super(origin, destination, 0);
 		this.airports = airports;
 		this.routes   = null;
 	}
 	
 	public TripAccumulator(String[] args, HashMap<String, Airport>airports){
-		super(args[0], args[1], TripAccumulator.string2IntNullGuard(args[2]));
-		this.layovers = TripAccumulator.string2IntNullGuard(args[3]);
+		super(args[0], args[1], 0);
 		this.airports = airports;
 		this.routes   = null;
 	}
 	
 	//////////  Instance  /////////////
 	
-	public ArrayList<Layover> accumulate(){
+//	public ArrayList<Layover> accumulate(){
+//		ArrayList<Layover> viableRoutes = new ArrayList<Layover>();
+//		String[] args = getArgs();
+//		viableRoutes.addAll(recursiveAccumulate(args));
+//		return viableRoutes;
+//	}
+	
+	public ArrayList<Layover> accumulateWithinFuelLimitN(int n){
 		ArrayList<Layover> viableRoutes = new ArrayList<Layover>();
-		String[] args = getArgs();
+		String[] args = getArgs(n, "fueLimit");
+		viableRoutes.addAll(recursiveAccumulate(args));
+		return viableRoutes;
+	}
+	
+	public ArrayList<Layover> accumulateWithinLayoverLimitN(int n){
+		ArrayList<Layover> viableRoutes = new ArrayList<Layover>();
+		String[] args = getArgs(n, "layoverLimit");
 		viableRoutes.addAll(recursiveAccumulate(args));
 		return viableRoutes;
 	}
@@ -68,30 +79,45 @@ public class TripAccumulator extends Trip {
 	}
 	
 	public String[] decrementArgs(String[] oldArgs, Connection flight){
-		String currentLocation 	     = flight.getDestination();
-		String desiredDestination    = oldArgs[1];
-		String RemainingFueLimit	 = decrementFueLimit(oldArgs[2], flight.getFuelCost());
-		String RemaininglayoverLimit = decrementLayoverLimit(oldArgs[3]);
-		String[] newArgs = {currentLocation, desiredDestination, RemainingFueLimit, RemaininglayoverLimit};
+		String attribute = oldArgs[3];
+		String[] newArgs = {"", "", "", ""};
+		switch(attribute){
+		case "fueLimit":
+			newArgs = decrementFuelArgs(oldArgs, flight);
+			break;
+		case "layoverLimit":
+			newArgs = decrementLayoverArgs(oldArgs, flight);
+			break;
+		}
+		return newArgs;
+	}
+	
+	public String[] decrementFuelArgs(String[] oldArgs, Connection flight){
+		String currentLocation 	    = flight.getDestination();
+		String desiredDestination   = oldArgs[1];
+		String RemainingLimit	 	= decrementFueLimit(oldArgs[2], flight.getFuelCost());
+		String limitType 			= oldArgs[3];
+		String[] newArgs = {currentLocation, desiredDestination, RemainingLimit, limitType};
+		return newArgs;
+	}
+	
+	public String[] decrementLayoverArgs(String[] oldArgs, Connection flight){
+		String currentLocation 	    = flight.getDestination();
+		String desiredDestination   = oldArgs[1];
+		String RemainingLimit	 	= decrementLayoverLimit(oldArgs[2]);
+		String limitType 			= oldArgs[3];
+		String[] newArgs = {currentLocation, desiredDestination, RemainingLimit, limitType};
 		return newArgs;
 	}
 	
 	public String decrementFueLimit(String fueLimit, int fuelCost){
-		if(fueLimit == null){
-			return null;
-		} else {
-			String rtn = Integer.toString( Integer.parseInt(fueLimit) - fuelCost );
-			return rtn;
-		}
+		String rtn = Integer.toString( Integer.parseInt(fueLimit) - fuelCost );
+		return rtn;
 	}
 	
 	public String decrementLayoverLimit(String layoverLimit){
-		if(layoverLimit == null){
-			return null;
-		} else {
-			String rtn = Integer.toString( Integer.parseInt(layoverLimit) - 1 );
-			return rtn;
-		}
+		String rtn = Integer.toString( Integer.parseInt(layoverLimit) - 1 );
+		return rtn;
 	}
 	
 	public Layover setBaseCase(String[] args){
@@ -107,15 +133,8 @@ public class TripAccumulator extends Trip {
 	}
 	
 	public boolean paramInBounds(String[] args){
-		Integer fueLimit 	 = string2IntNullGuard(args[2]);
-		Integer layoverLimit = string2IntNullGuard(args[3]);
-		if( (fueLimit != null) && (layoverLimit != null)){
-			return((fueLimit >=0 ) && (layoverLimit >= 0));
-		} else if( fueLimit != null){
-			return (fueLimit >= 0);
-		} else {
-			return (layoverLimit >= 0);
-		}
+		Integer limit 	 = string2IntNullGuard(args[2]);
+		return (limit >= 0);
 	}
 	
 	public void notateCurrentLocation(ArrayList<Layover> viablePaths, Airport flyingFrom){
@@ -127,22 +146,19 @@ public class TripAccumulator extends Trip {
 		}
 	}
 	
-	public String[] getArgs(){
+	public String[] getArgs(int limitN, String limitType){
 		String[] args = {"","","",""};
 		args[0] = this.getOrigin();
 		args[1] = this.getDestination();
-		args[2] = int2StringNullGuard(this.getFuelLimit());
-		args[3] = int2StringNullGuard(this.getLayoverLimit());
+		args[2] = Integer.toString(limitN);
+		args[3] = limitType;
 		return args;
 	}
 	
-	public int getFuelLimit(){
+	public int getLimit(){
 		return fuelCost;
 	}
 
-	public int getLayoverLimit(){
-		return layovers;
-	}
 	
 	public HashMap<String, Airport> getAirports(){
 		return airports;
