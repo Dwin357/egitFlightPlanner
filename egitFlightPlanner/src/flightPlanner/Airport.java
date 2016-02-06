@@ -5,16 +5,16 @@ import java.util.HashMap;
 
 public class Airport {
 	
-	private HashMap<String, Connection> connections;
+	private HashMap<String, Flight> connections;
 	private String name;
 
 	public Airport(String name) {
 		super();
 		this.name = name;
-		this.connections = new HashMap<String, Connection>();
+		this.connections = new HashMap<String, Flight>();
 	}
 	
-	public boolean hasConnection(Connection subject){
+	public boolean hasConnection(Flight subject){
 		return hasConnection(subject.getDestination());
 	}
 	
@@ -22,15 +22,15 @@ public class Airport {
 		return (connections.get(subject) != null);
 	}
 	
-	public Connection getConnection(String request){
+	public Flight getConnection(String request){
 		return connections.get(request);
 	}
 	
-	public HashMap<String, Connection> getConnections(){
+	public HashMap<String, Flight> getConnections(){
 		return connections;
 	}
 	
-	public void addConnection(Connection newConnection){
+	public void addConnection(Flight newConnection){
 		connections.put(newConnection.getDestination(), newConnection);
 	}
 	

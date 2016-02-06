@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -14,7 +15,7 @@ import org.apache.commons.csv.CSVParser;
 public class FlightPlanner {
 	
 	private HashMap<String, Airport> airports;
-	private Trip[][] efficientRoutes;
+	private OptimizedLookupTable efficientRoutes;
 	
 	//////////////  remove when done ///////////////
 	
@@ -29,6 +30,8 @@ public class FlightPlanner {
 		super();
 		airports = new HashMap<String, Airport>();
 		fromCSVPath(filePath);
+		efficientRoutes = new OptimizedLookupTable(airports);
+		
 	}
 	
 	public FlightPlanner(File file) {
@@ -83,7 +86,7 @@ public class FlightPlanner {
 	}
 	
 	private void addFlight(String line){
-		Connection connection = Connection.connectionFromLine(line);
+		Flight connection = Flight.flightFromLine(line);
 		Airport airport = findOrCreateAirport(connection.getOrigin());
 		airport.addConnection(connection);
 	}	

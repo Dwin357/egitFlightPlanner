@@ -9,20 +9,20 @@ public class AirportTest {
 	
 	private Airport subjectWithConnection;
 	private Airport subjectWithoutConnection;	
-	private Connection sample_connection1;
-	private Connection sample_connection2;
-	private Connection sample_connection3;
+	private Flight sample_connection1;
+	private Flight sample_connection2;
+	private Flight sample_connection3;
 	
 	@Before
 	public void setUp() throws Exception {
 		subjectWithConnection = new Airport("Ohare");
-		sample_connection1 = new Connection("Ohare", "Dallas", 200);
-		sample_connection2 = new Connection("Ohare", "Phoneix", 350);
+		sample_connection1 = new Flight("Ohare", "Dallas", 200);
+		sample_connection2 = new Flight("Ohare", "Phoneix", 350);
 		subjectWithConnection.addConnection(sample_connection1);
 		subjectWithConnection.addConnection(sample_connection2);
 		
 		subjectWithoutConnection = new Airport("Rockford");
-		sample_connection3 = new Connection("Rockford", "Leguardia", 250);
+		sample_connection3 = new Flight("Rockford", "Leguardia", 250);
 	}
 
 	@Test

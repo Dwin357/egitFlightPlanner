@@ -1,14 +1,14 @@
 package flightPlanner;
 
-public class Connection extends Trip {
-	public Connection(String origin, String destination, int fuelCost) {
+public class Flight extends Trip {
+	public Flight(String origin, String destination, int fuelCost) {
 		super(origin, destination, fuelCost);
 	}
-	public Connection(String[] arg) {
+	public Flight(String[] arg) {
 		super(arg[0], arg[1], Integer.parseInt(arg[2]));
 	}
 
-	public static Connection connectionFromLine(String line){
+	public static Flight flightFromLine(String line){
 		line = chompComma(line);	
 	
 		String[] workInProgress = splitDistance(line);
@@ -18,7 +18,7 @@ public class Connection extends Trip {
 		String from = workInProgress[0];
 		String to = workInProgress[1];
 		
-		Connection connection = new Connection(from, to, distance);
+		Flight connection = new Flight(from, to, distance);
 		return connection;
 	}
 	

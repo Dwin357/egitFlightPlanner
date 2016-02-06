@@ -18,7 +18,7 @@ public class Layover extends Trip {
 	}
 	
 	
-	public static Layover addConnections(Connection firstLeg, Connection secondLeg){
+	public static Layover addConnections(Flight firstLeg, Flight secondLeg){
 		// ideally this should throw an error if the two connections don't match up
 		String origin 	   = firstLeg.getOrigin();
 		String destination = secondLeg.getDestination();
@@ -29,7 +29,7 @@ public class Layover extends Trip {
 		return layover;
 	}
 	
-	public void appendConnection(Connection newConnection){
+	public void appendConnection(Flight newConnection){
 		this.destination 	= newConnection.getDestination();
 		this.fuelCost		= getFuelCost() + newConnection.getFuelCost();
 		
@@ -42,7 +42,7 @@ public class Layover extends Trip {
 		}
 	}
 	
-	public void prependConnection(Connection newConnection){
+	public void prependConnection(Flight newConnection){
 		this.origin 		= newConnection.getOrigin();
 		this.fuelCost		= getFuelCost() + newConnection.getFuelCost();
 			
