@@ -2,7 +2,9 @@ package flightPlanner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 
 public class TripAccumulator {
@@ -30,18 +32,91 @@ public class TripAccumulator {
 	}
 	
 	public int tripsWithinParams(String origin, String destination, String limitingFeature, int limit){
+		ArrayList<Layover> viablePaths = new ArrayList<Layover>();
+		for(int i=limit; i > 0; i--){
+			viablePaths.addAll(recurrsiveAccumulation(origin, destination, limitingFeature, Integer.toString(i)));
+		}
 		
-		return -1;
+		HashMap<String, Layover> uniques = uniquePaths(viablePaths);
+		System.out.println(uniques.keySet());
+		return uniques.size();
 	}
 	
 	public int tripsMatchingParams(String origin, String destination, String limitingFeature, int limit){
-		
-		return -1;
+		ArrayList<Layover> viablePaths = new ArrayList<Layover>();
+		viablePaths.addAll(recurrsiveAccumulation(origin, destination, limitingFeature, Integer.toString(limit)));
+		return viablePaths.size();
 	}
+
+	
+	private HashMap<String, Layover> uniquePaths(ArrayList<Layover> viablePaths){
+		HashMap<String, Layover> uniquePaths = new HashMap<String, Layover>();
+		for(Layover layover : viablePaths){
+			uniquePaths.put(layover.getFullPath(), layover);
+		}
+		return uniquePaths;
+	}
+	
 	
 	public int optimizedPath(String origin, String destination, String optimizedLimit){
 		
 		return -1;
+	}
+	
+	private ArrayList<Layover> recurrsiveAccumulation(String origin, String destination, String limitingFeature, String limit){
+		ArrayList<Layover> viablePaths = new ArrayList<Layover>();
+		if(Integer.parseInt(limit) <= 0 ){
+			if(origin.equals(destination)){
+				viablePaths.add(setBaseCase(origin));
+			}
+		} else {
+			Airport flyingFrom = getAirports().get(origin);
+			for(Map.Entry<String, Connection> connection : flyingFrom.getConnections().entrySet()){
+				String newLimit = decrement(limitingFeature, limit, connection.getValue());
+				viablePaths.addAll(
+						recurrsiveAccumulation(
+								connection.getValue().getDestination(), 
+								destination, 
+								limitingFeature, 
+								newLimit
+						)
+				);
+			}
+			notateCurrentLocation(viablePaths, flyingFrom);
+		}
+		return viablePaths;
+	}
+	
+	private Layover setBaseCase(String currentLocation){
+		Layover location = Layover.origin(currentLocation);
+		return location;
+	}
+	
+	public void notateCurrentLocation(ArrayList<Layover> viablePaths, Airport flyingFrom){
+		// right now I'm treating this like it will mutate the object, might need to reassign thou 
+		for(Layover path : viablePaths){
+			String layoverCity = path.getOrigin();
+			Connection flight = flyingFrom.getConnection(layoverCity);
+			path.prependConnection(flight);
+		}
+	}
+	
+	private String decrement(String limitingFeature, String limitAmount, Connection flight){
+		String newLimit = "";
+		switch(limitingFeature){
+		case "layovers":
+			newLimit = Integer.toString(Integer.parseInt(limitAmount) - 1);
+			break;
+		case "fuel":
+			newLimit = Integer.toString(Integer.parseInt(limitAmount) - flight.getFuelCost());
+			break;
+		}
+		return newLimit;
+	}
+	
+	
+	private HashMap<String, Airport> getAirports(){
+		return airports;
 	}
 }
 

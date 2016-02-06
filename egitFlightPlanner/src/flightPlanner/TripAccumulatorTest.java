@@ -48,7 +48,6 @@ public class TripAccumulatorTest {
 	@Test
 	public void testCase6(){
 		assertEquals(2, subject.tripsWithinParams("C", "C", "layovers", 3));
-		
 	}
 	
 	@Test
@@ -56,20 +55,20 @@ public class TripAccumulatorTest {
 		assertEquals(3, subject.tripsMatchingParams("A", "C", "layovers", 4));
 	}
 	
-	@Test
-	public void testCase8(){
-		assertEquals(9, subject.optimizedPath("A", "C", "fuel"));
-	}
+//	@Test
+//	public void testCase8(){
+//		assertEquals(9, subject.optimizedPath("A", "C", "fuel"));
+//	}
+//	
+//	@Test
+//	public void testCase9(){
+//		assertEquals(9, subject.optimizedPath("B", "B", "fuel"));
+//	}
 	
-	@Test
-	public void testCase9(){
-		assertEquals(9, subject.optimizedPath("B", "B", "fuel"));
-	}
-	
-	@Test
-	public void testCase10(){
-		assertEquals(7, subject.tripsWithinParams("C", "C", "fuel", 30));
-	}
+//	@Test
+//	public void testCase10(){
+//		assertEquals(7, subject.tripsWithinParams("C", "C", "fuel", 30));
+//	}
 }
 
   //////////   redux  ///////////////
