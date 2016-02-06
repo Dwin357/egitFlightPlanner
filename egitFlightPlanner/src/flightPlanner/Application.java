@@ -20,16 +20,16 @@ public class Application {
 	 */
 	public static void main(String[] args) {
 		
-		String txtName = "/home/dwin357/Desktop/graph.txt";
-		
-		FlightPlanner planner = new FlightPlanner("testGraph");
-		String[] sample = {"C", "C", null, "3"};
-//		TripAccumulator subject = new TripAccumulator(sample, planner.getAirports());
-		TripAccumulator subject = new TripAccumulator("C", "C", planner.getAirports());
-		ArrayList<Layover> rtn = subject.accumulateWithinLayoverLimitN(4);
-		for(Layover layover : rtn){
-			System.out.println(layover.getFullPath());
-		}
+//		String txtName = "/home/dwin357/Desktop/graph.txt";
+//		
+//		FlightPlanner planner = new FlightPlanner("testGraph");
+//		String[] sample = {"C", "C", null, "3"};
+////		TripAccumulator subject = new TripAccumulator(sample, planner.getAirports());
+//		TripAccumulator subject = new TripAccumulator("C", "C", planner.getAirports());
+//		ArrayList<Layover> rtn = subject.accumulateWithinLayoverLimitN(4);
+//		for(Layover layover : rtn){
+//			System.out.println(layover.getFullPath());
+//		}
 		
 //		HashMap<String, Airport> test = planner.getAirports();
 		
