@@ -31,32 +31,41 @@ public class TripAccumulator {
 		return fuelUsed;
 	}
 	
-	public int tripsWithinParams(String origin, String destination, String limitingFeature, int limit){
-		ArrayList<Layover> viablePaths = new ArrayList<Layover>();
-		for(int i=limit; i > 0; i--){
-			viablePaths.addAll(recurrsiveAccumulation(origin, destination, limitingFeature, Integer.toString(i)));
-		}
-		
-		HashMap<String, Layover> uniques = uniquePaths(viablePaths);
-		System.out.println(uniques.keySet());
-		return uniques.size();
-	}
-	
-	public int tripsMatchingParams(String origin, String destination, String limitingFeature, int limit){
-		ArrayList<Layover> viablePaths = new ArrayList<Layover>();
-		viablePaths.addAll(recurrsiveAccumulation(origin, destination, limitingFeature, Integer.toString(limit)));
+	public int countTripsWithinParamsExclusive(String origin, String destination, String limitingFeature, int limit){
+		ArrayList<Layover> viablePaths = tripsWithinParamsInclusive(origin, destination, limitingFeature, limit-1);
 		return viablePaths.size();
 	}
-
 	
-	private HashMap<String, Layover> uniquePaths(ArrayList<Layover> viablePaths){
-		HashMap<String, Layover> uniquePaths = new HashMap<String, Layover>();
-		for(Layover layover : viablePaths){
-			uniquePaths.put(layover.getFullPath(), layover);
-		}
-		return uniquePaths;
+	public int countTripsWithinParamsInclusive(String origin, String destination, String limitingFeature, int limit){
+		ArrayList<Layover> viablePaths = tripsWithinParamsInclusive(origin, destination, limitingFeature, limit);
+		return viablePaths.size();		
 	}
 	
+	public ArrayList<Layover> tripsWithinParamsInclusive(String origin, String destination, String limitingFeature, int limit){
+		ArrayList<Layover> viablePaths = new ArrayList<Layover>();
+		for(int i=limit; i > 0; i--){
+			viablePaths.addAll(tripsMatchingParams(origin, destination, limitingFeature, i));
+		}
+		return viablePaths;
+	}
+	
+//	public void printArrayList(ArrayList<Layover> viablePaths){
+//		for debugging
+//		for(Layover layover : viablePaths){
+//			System.out.println(layover.getFullPath()+" "+layover.getFuelCost());
+//		}
+//	}
+	
+	public ArrayList<Layover> tripsMatchingParams(String origin, String destination, String limitingFeature, int limit){
+		ArrayList<Layover> viablePaths = new ArrayList<Layover>();
+		viablePaths.addAll(recurrsiveAccumulation(origin, destination, limitingFeature, Integer.toString(limit)));
+		return viablePaths;
+	}
+
+	public int countTripsMatchingParams(String origin, String destination, String limitingFeature, int limit){
+		ArrayList<Layover> viablePaths = tripsMatchingParams(origin, destination, limitingFeature, limit);
+		return viablePaths.size();		
+	}	
 	
 	public int optimizedPath(String origin, String destination, String optimizedLimit){
 		
@@ -65,24 +74,26 @@ public class TripAccumulator {
 	
 	private ArrayList<Layover> recurrsiveAccumulation(String origin, String destination, String limitingFeature, String limit){
 		ArrayList<Layover> viablePaths = new ArrayList<Layover>();
-		if(Integer.parseInt(limit) <= 0 ){
+		if(Integer.parseInt(limit) == 0 ){
 			if(origin.equals(destination)){
 				viablePaths.add(setBaseCase(origin));
 			}
 		} else {
-			Airport flyingFrom = getAirports().get(origin);
-			for(Map.Entry<String, Connection> connection : flyingFrom.getConnections().entrySet()){
-				String newLimit = decrement(limitingFeature, limit, connection.getValue());
-				viablePaths.addAll(
-						recurrsiveAccumulation(
-								connection.getValue().getDestination(), 
-								destination, 
-								limitingFeature, 
-								newLimit
-						)
-				);
+			if (Integer.parseInt(limit) > 0){
+				Airport flyingFrom = getAirports().get(origin);
+				for(Map.Entry<String, Connection> connection : flyingFrom.getConnections().entrySet()){
+					String decrementedLimit = decrementLimit(limitingFeature, limit, connection.getValue());
+					viablePaths.addAll(
+							recurrsiveAccumulation(
+									connection.getValue().getDestination(), 
+									destination, 
+									limitingFeature, 
+									decrementedLimit
+							)
+					);
+				}
+				notateCurrentLocation(viablePaths, flyingFrom);
 			}
-			notateCurrentLocation(viablePaths, flyingFrom);
 		}
 		return viablePaths;
 	}
@@ -101,7 +112,7 @@ public class TripAccumulator {
 		}
 	}
 	
-	private String decrement(String limitingFeature, String limitAmount, Connection flight){
+	private String decrementLimit(String limitingFeature, String limitAmount, Connection flight){
 		String newLimit = "";
 		switch(limitingFeature){
 		case "layovers":
