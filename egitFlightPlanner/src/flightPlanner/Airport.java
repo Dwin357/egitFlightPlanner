@@ -5,13 +5,22 @@ import java.util.HashMap;
 
 public class Airport {
 	
-	private HashMap<String, Flight> connections;
+	private HashMap<String, Connection> connections;
 	private String name;
 
 	public Airport(String name) {
 		super();
 		this.name = name;
-		this.connections = new HashMap<String, Flight>();
+		this.connections = new HashMap<String, Connection>();
+	}
+	
+	public boolean hasConnection(Flight destination, String listing){
+		boolean answer = false;
+		if (hasConnection(destination)){
+			Connection connection = connections.get(destination.getDestination());
+			answer = connection.hasListing(listing);
+		}
+		return answer;
 	}
 	
 	public boolean hasConnection(Flight subject){
@@ -22,25 +31,34 @@ public class Airport {
 		return (connections.get(subject) != null);
 	}
 	
-	public Flight getConnection(String request){
+	public Connection getConnection(String request){
 		return connections.get(request);
 	}
 	
-	public HashMap<String, Flight> getConnections(){
+	public HashMap<String, Connection> getConnections(){
 		return connections;
 	}
 	
-	public void addConnection(Flight newConnection){
-		connections.put(newConnection.getDestination(), newConnection);
+	public void addOrCreateConnection(Flight flight){
+		addOrCreateConnection("direct", flight);
+	}
+	public void addOrCreateConnection(String flightType, Flight flight){
+		if(hasConnection(flight.getDestination())){
+			Connection connection = connections.get(flight.getDestination());
+			connection.addFlight(flightType, flight);
+		} else {
+			Connection connection = Connection.connectionFromFlight(flightType, flight);
+			connections.put(flight.getDestination(), connection);
+		}
 	}
 	
 	public String getName(){
 		return name;
 	}
 	
-	public int connectionFuelCost(String connectionName){
-		return connections.get(connectionName).getFuelCost();
-	}
+//	public int connectionFuelCost(String connectionName){
+//		return connections.get(connectionName).getFuelCost();
+//	}
 
 	public String[] gatherConnections(){
 		String[] ports = connections.keySet().toArray(new String[connections.keySet().size()]);

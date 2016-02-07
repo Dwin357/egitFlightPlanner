@@ -21,6 +21,27 @@ public class LayoverTest {
 		sample3 = new Flight(arg3);
 		
 	}
+	
+	@Test
+	public void testLayoverFromFlight(){
+		Layover subject = new Layover(sample1);
+		assertEquals("Dallas", subject.getOrigin());
+		assertEquals("Ohare", subject.getDestination());
+		assertEquals(200, subject.getFuelCost());
+		assertEquals("", subject.getLayovers());
+	}
+	
+	@Test
+	public void testLayoverStopCount(){
+		Layover subject = Layover.addConnections(sample1, sample2);
+		assertEquals(1, subject.layoverStopCount());
+		
+		Layover subject2 = Layover.origin("Dallas");
+		assertEquals(0, subject2.layoverStopCount());
+		
+		subject2.appendConnection(sample1);
+		assertEquals(0, subject2.layoverStopCount());
+	}
 
 	@Test
 	public void testGetFullPath() {

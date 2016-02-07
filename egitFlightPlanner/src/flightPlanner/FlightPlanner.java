@@ -88,7 +88,7 @@ public class FlightPlanner {
 	private void addFlight(String line){
 		Flight connection = Flight.flightFromLine(line);
 		Airport airport = findOrCreateAirport(connection.getOrigin());
-		airport.addConnection(connection);
+		airport.addOrCreateConnection(connection, "direct");
 	}	
 	
 	private Airport findOrCreateAirport(String name){	

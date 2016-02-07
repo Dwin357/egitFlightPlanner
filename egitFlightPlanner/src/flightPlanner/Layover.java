@@ -8,6 +8,11 @@ public class Layover extends Trip {
 		this.layovers = layovers;
 	}
 	
+	public Layover(Flight flight){
+		super(flight.getOrigin(), flight.getDestination(), flight.getFuelCost());
+		this.layovers = "";
+	}
+	
 	public String getFullPath(){
 		String fullPath = this.getOrigin()+"-"+this.getLayovers()+"-"+this.getDestination();
 		return fullPath;
@@ -15,6 +20,15 @@ public class Layover extends Trip {
 	
 	public String getLayovers(){
 		return layovers;
+	}
+	
+	public int layoverStopCount(){
+		if ((getLayovers() == null) || (getLayovers().equals(""))){
+			return 0;
+		} else {
+			String[] stops = getLayovers().split("-");
+			return stops.length;
+		}
 	}
 	
 	
@@ -58,6 +72,7 @@ public class Layover extends Trip {
 		}
 	}
 	
+	/////////////   class  /////////////
 	public static Layover origin(String location){
 		String origin 	   = location;
 		String destination = location;
