@@ -24,11 +24,12 @@ public class OptimizedLookupTable {
 	private void setLookupTable(HashMap<String, DestinationAirport> airports){
 		ArrayList<Connection> allConnections = stripConnectionsFromOldDataStructure(airports);
 		lookupTable = new Layover[listOfAirportNames.size()][listOfAirportNames.size()];
-		
-		
+		padLookupTableOrigins();	
 		for(Connection connection : allConnections){
 			addConnectionToDataStructure(connection);
 		}
+		floydWarshallLoop();
+		resetLookupTableOriginsToInfinite();
 		floydWarshallLoop();
 	}
 	
@@ -38,7 +39,17 @@ public class OptimizedLookupTable {
 		lookupTable[origin][destination] = new Layover(connection);
 	}
 	
+	private void padLookupTableOrigins(){
+		for(int location=0; location < listOfAirportNames.size(); location++){
+			lookupTable[location][location] = Layover.origin(listOfAirportNames.get(location));
+		}
+	}
 	
+	private void resetLookupTableOriginsToInfinite(){
+		for(int location=0; location < listOfAirportNames.size(); location++){
+			lookupTable[location][location] = Layover.infinite(listOfAirportNames.get(location));
+		}
+	}
 	
 	private void floydWarshallLoop(){
 		for(int departing=0; departing < listOfAirportNames.size(); departing++){

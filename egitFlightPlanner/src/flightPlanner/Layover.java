@@ -89,6 +89,14 @@ public class Layover extends Trip {
 		return layover;	
 	}
 	
+	public static Layover infinite(String location){
+		String origin 		= location;
+		String destination  = location;
+		int fuelCost		= 999999;
+		String layovers 	= null;
+		return new Layover(origin, destination, fuelCost, layovers);
+	}
+	
 	public static Layover addConnections(Connection firstLeg, Connection secondLeg){
 		// ideally this should throw an error if the two connections don't match up
 		String origin 	   = firstLeg.getOrigin();
@@ -105,4 +113,5 @@ public class Layover extends Trip {
 		result.appendLayover(leg2);
 		return result;
 	}
+	
 }
