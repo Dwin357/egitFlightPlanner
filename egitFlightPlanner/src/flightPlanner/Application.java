@@ -21,6 +21,20 @@ public class Application {
 	public static void main(String[] args) {
 		
 //		String txtName = "/home/dwin357/Desktop/graph.txt";
+		
+		ArrayList<String> test = new ArrayList<String>();
+		test.add("A");
+		test.add("B");
+		test.add("C");
+		System.out.println("of A " +test.indexOf("A"));
+		System.out.println("of C " +test.indexOf("C"));
+		
+		System.out.println("size " + test.size());
+		
+		String[][] q = new String[2][2];
+		q[1][1] = "set";
+		System.out.println(q[2][2] == null);
+		System.out.println(q[1][1].equals("set"));
 //		
 //		FlightPlanner planner = new FlightPlanner("testGraph");
 //		String[] sample = {"C", "C", null, "3"};

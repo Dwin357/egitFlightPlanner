@@ -13,6 +13,11 @@ public class Layover extends Trip {
 		this.layovers = "";
 	}
 	
+	public Layover(Layover flight){
+		super(flight.getOrigin(), flight.getDestination(), flight.getFuelCost());
+		this.layovers = flight.getLayovers();
+	}
+	
 	public String getFullPath(){
 		String fullPath = this.getOrigin()+"-"+this.getLayovers()+"-"+this.getDestination();
 		return fullPath;
@@ -31,16 +36,17 @@ public class Layover extends Trip {
 		}
 	}
 	
-	
-	public static Layover addConnections(Connection firstLeg, Connection secondLeg){
-		// ideally this should throw an error if the two connections don't match up
-		String origin 	   = firstLeg.getOrigin();
-		String destination = secondLeg.getDestination();
-		int fuelCost 	   = firstLeg.getFuelCost() + secondLeg.getFuelCost();
-		String layovers    =  firstLeg.getDestination() ;
-				
-		Layover layover = new Layover(origin, destination, fuelCost, layovers);
-		return layover;
+	public void appendLayover(Layover newLayover){
+		this.destination 	= newLayover.getDestination();
+		this.fuelCost		= getFuelCost() + newLayover.getFuelCost();
+		
+		if(getLayovers() == null){
+			this.layovers = "";
+		} else if(getLayovers().equals("")){
+			this.layovers = newLayover.getOrigin();
+		} else {
+			this.layovers = getLayovers() + "-" + newLayover.getOrigin();
+		}
 	}
 	
 	public void appendConnection(Connection newConnection){
@@ -82,5 +88,21 @@ public class Layover extends Trip {
 		Layover layover = new Layover(origin, destination, fuelCost, layovers);
 		return layover;	
 	}
+	
+	public static Layover addConnections(Connection firstLeg, Connection secondLeg){
+		// ideally this should throw an error if the two connections don't match up
+		String origin 	   = firstLeg.getOrigin();
+		String destination = secondLeg.getDestination();
+		int fuelCost 	   = firstLeg.getFuelCost() + secondLeg.getFuelCost();
+		String layovers    =  firstLeg.getDestination() ;
+				
+		Layover layover = new Layover(origin, destination, fuelCost, layovers);
+		return layover;
+	}
 
+	public static Layover concat(Layover leg1, Layover leg2){
+		Layover result = new Layover(leg1);
+		result.appendLayover(leg2);
+		return result;
+	}
 }

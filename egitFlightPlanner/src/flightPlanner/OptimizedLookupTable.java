@@ -5,25 +5,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class OptimizedLookupTable {
-	private HashMap<String, DepartureAirport> lookupTable; 
+	private Layover[][] lookupTable; 
 	private ArrayList<String> listOfAirportNames;
 
 	public OptimizedLookupTable(HashMap<String, DestinationAirport> airports) {
 		listOfAirportNames = new ArrayList<String>();
-		lookupTable = new HashMap<>();
 		setLookupTable(airports);
 	}
 	
-	public Layover optimizedPath(String origin, String destination, String optimizationFeature){
-		DepartureAirport departing = getDeparting(origin);
-		DestinationAirport arriving = departing.getDestination(destination); 
-		return arriving.getLayover(optimizationFeature);
+	public Layover optimizedFuelPath(String origin, String destination){
+		int originIndex = tableIndexOf(origin);
+		int destinationIndex = tableIndexOf(destination);
+		return lookupTable[originIndex][destinationIndex];
 	}
 	
 	
 	
 	private void setLookupTable(HashMap<String, DestinationAirport> airports){
 		ArrayList<Connection> allConnections = stripConnectionsFromOldDataStructure(airports);
+		lookupTable = new Layover[listOfAirportNames.size()][listOfAirportNames.size()];
+		
+		
 		for(Connection connection : allConnections){
 			addConnectionToDataStructure(connection);
 		}
@@ -31,44 +33,48 @@ public class OptimizedLookupTable {
 	}
 	
 	private void addConnectionToDataStructure(Connection connection){
-		addAirportNameIfUnique(connection.getDestination());
-		addAirportNameIfUnique(connection.getOrigin());
-		DepartureAirport departing = findOrCreateDepartureAirport(connection);
-		DestinationAirport arriving = departing.findOrCreateDestinationAirport(connection);
-		arriving.addLayover(connection, "direct");
+		int origin = listOfAirportNames.indexOf(connection.getOrigin());
+		int destination = listOfAirportNames.indexOf(connection.getDestination());
+		lookupTable[origin][destination] = new Layover(connection);
 	}
 	
-	private DepartureAirport findOrCreateDepartureAirport(Connection connection){
-		DepartureAirport departing = getLookupTable().get(connection.getOrigin());
-		if(departing == null){
-			departing = new DepartureAirport(connection.getOrigin());
-			getLookupTable().put(connection.getOrigin(), departing);
-		}
-		return departing;
-	}
+	
 	
 	private void floydWarshallLoop(){
-		for(String departing : listOfAirportNames){
-			ensureDeparting(departing);
-			for(String arriving : listOfAirportNames){
-				ensureArriving(departing, arriving);
-				for(String alternative : listOfAirportNames){
-					
+		for(int departing=0; departing < listOfAirportNames.size(); departing++){
+			for(int arriving=0; arriving < listOfAirportNames.size(); arriving++){
+				for(int alternative=0; alternative < listOfAirportNames.size(); alternative++){	
 					floydWarshallAssignment(departing, arriving, alternative);
 				}
 			}
 		}
 	}
 	
-	private void floydWarshallAssignment (String departing, String arriving, String alternative){
-		if(floydWarshallComparison(departing, arriving, alternative){
-			
+	private void floydWarshallAssignment (int departing, int arriving, int alternative){
+		if(floydWarshallComparison(departing, arriving, alternative)){
+			floydWarshallSubstitution(departing, arriving, alternative);
 		}
 	}
 	
-	private boolean floydWarshallComparison(String departing, String arriving, String alternative){
-		
-		return false;
+	private boolean floydWarshallComparison(int departing, int arriving, int alternative){
+		Layover currentRoute = lookupTable[departing][arriving];
+		Layover altLeg1 = lookupTable[departing][alternative];
+		Layover altLeg2 = lookupTable[alternative][arriving];
+		if ((altLeg1 == null) || (altLeg2==null)){
+			return false;
+		} else if (currentRoute == null){
+			return true;
+		} else if ( currentRoute.getFuelCost() > altLeg1.getFuelCost()+altLeg2.getFuelCost() ){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	private void floydWarshallSubstitution(int departing, int arriving, int alternative){
+		Layover leg1 = lookupTable[departing][alternative];
+		Layover leg2 = lookupTable[alternative][arriving];
+		lookupTable[departing][arriving] = Layover.concat(leg1, leg2);
 	}
 	
 	private ArrayList<Connection> stripConnectionsFromOldDataStructure(HashMap<String, DestinationAirport> airports){
@@ -78,6 +84,8 @@ public class OptimizedLookupTable {
 			DestinationAirport airport = portEntry.getValue();
 			for(Map.Entry<String, Connection> conEntry : airport.getConnections().entrySet()){
 				Connection connection = conEntry.getValue();
+				addAirportNameIfUnique(connection.getDestination());
+				addAirportNameIfUnique(connection.getOrigin());
 				allConnections.add(connection);
 			}
 		}
@@ -90,12 +98,11 @@ public class OptimizedLookupTable {
 		}
 	}
 	
-	public DepartureAirport getDeparting(String name){
-		DepartureAirport departing = getLookupTable().get(name);
-		return departing;
+	private int tableIndexOf(String name){
+		return getListOfAirportNames().indexOf(name);
 	}
 	
-	public HashMap<String, DepartureAirport> getLookupTable(){
+	public Layover[][] getLookupTable(){
 		return lookupTable;
 	}
 	

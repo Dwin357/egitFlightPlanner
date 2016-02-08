@@ -15,16 +15,16 @@ public class OptimizedLookupTableTest {
 	}
 
 	
-//	@Test
-//	public void testCase8(){
-//		assertEquals(9, subject.optimizedPath("A", "C", "fuel"));
-//	}
-//	
-//	@Test
-//	public void testCase9(){
-//		assertEquals(9, subject.optimizedPath("B", "B", "fuel"));
-//	}
-//	
+	@Test
+	public void testCase8(){
+		assertEquals(9, subject.optimizedFuelPath("A", "C").getFuelCost());
+	}
+	
+	@Test
+	public void testCase9(){
+		assertEquals(9, subject.optimizedFuelPath("B", "B").getFuelCost());
+	}
+	
 	
 	@Test
 	public void testBuildOfLookupTable(){
