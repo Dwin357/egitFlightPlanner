@@ -6,9 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class LayoverTest {
-	private Flight sample1;
-	private Flight sample2;
-	private Flight sample3;
+	private Connection sample1;
+	private Connection sample2;
+	private Connection sample3;
 
 	@Before
 	public void setUp() throws Exception {
@@ -16,9 +16,9 @@ public class LayoverTest {
 		String[] arg2 = {"Ohare", "Denver", "300"};
 		String[] arg3 = {"Denver", "Seatle", "100"};
 		
-		sample1 = new Flight(arg1);
-		sample2 = new Flight(arg2);
-		sample3 = new Flight(arg3);
+		sample1 = new Connection(arg1);
+		sample2 = new Connection(arg2);
+		sample3 = new Connection(arg3);
 		
 	}
 	

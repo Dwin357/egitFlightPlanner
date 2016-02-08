@@ -5,21 +5,21 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class FlightTest {
+public class ConnectionTest {
 	
-	public Flight subject;
+	public Connection subject;
 
 	@Before
 	public void setUp() throws Exception {
-		subject =  new Flight("Ohare", "Dallas", 200);
+		subject =  new Connection("Ohare", "Dallas", 200);
 	}
 	
 	@Test
 	public void testFlightFromLine(){
 		String expectedArgs = "HardCase400";
 		String alternateArgs = "CommaTest32,";
-		Flight subject1 = Flight.flightFromLine(expectedArgs);
-		Flight subject2 = Flight.flightFromLine(alternateArgs);
+		Connection subject1 = Connection.connectionFromLine(expectedArgs);
+		Connection subject2 = Connection.connectionFromLine(alternateArgs);
 		
 		assertEquals("Hard", subject1.getOrigin());
 		assertEquals("Case", subject1.getDestination());

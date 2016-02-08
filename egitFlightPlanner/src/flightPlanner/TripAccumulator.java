@@ -21,7 +21,7 @@ public class TripAccumulator {
 		
 		for(int i=1; i < stops.length; i++){
 			Airport departingFrom = airports.get(currentLocation);
-			Flight flight = departingFrom.getConnection(stops[i]);
+			Connection flight = departingFrom.getConnection(stops[i]);
 			if(flight == null){
 				return -1;
 			}
@@ -81,7 +81,7 @@ public class TripAccumulator {
 		} else {
 			if (Integer.parseInt(limit) > 0){
 				Airport flyingFrom = getAirports().get(origin);
-				for(Map.Entry<String, Flight> connection : flyingFrom.getConnections().entrySet()){
+				for(Map.Entry<String, Connection> connection : flyingFrom.getConnections().entrySet()){
 					String decrementedLimit = decrementLimit(limitingFeature, limit, connection.getValue());
 					viablePaths.addAll(
 							recurrsiveAccumulation(
@@ -106,12 +106,12 @@ public class TripAccumulator {
 	public void notateCurrentLocation(ArrayList<Layover> viablePaths, Airport flyingFrom){
 		for(Layover path : viablePaths){
 			String layoverCity = path.getOrigin();
-			Flight flight = flyingFrom.getConnection(layoverCity);
+			Connection flight = flyingFrom.getConnection(layoverCity);
 			path.prependConnection(flight);
 		}
 	}
 	
-	private String decrementLimit(String limitingFeature, String limitAmount, Flight flight){
+	private String decrementLimit(String limitingFeature, String limitAmount, Connection flight){
 		String newLimit = "";
 		switch(limitingFeature){
 		case "layovers":

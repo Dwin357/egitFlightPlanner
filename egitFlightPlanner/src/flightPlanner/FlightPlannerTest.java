@@ -30,14 +30,6 @@ public class FlightPlannerTest {
 		assertArrayEquals(hardCaseReturn, hardSubject.collectAirports());
 	}
 
-	@Test
-	public void testFuelCostForTrip() {
-		assertEquals(9, simpleSubject.fuelCostForTrip("A-B-C"));
-		assertEquals(5, simpleSubject.fuelCostForTrip("A-D"));
-		assertEquals(22, simpleSubject.fuelCostForTrip("A-E-B-C-D"));
-		assertEquals(13, simpleSubject.fuelCostForTrip("A-D-C"));
-		assertEquals(-1, simpleSubject.fuelCostForTrip("A-E-D"));
-	}
 
 //	@Test
 //	public void testTripsWithinNLayovers(){

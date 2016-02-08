@@ -44,21 +44,6 @@ public class FlightPlanner {
 		}
 	}
 	
-	public int fuelCostForTrip(String trip){
-		int fuelCost = 0;
-		String[] stops = trip.split("-");
-		Airport departingFrom = airports.get(stops[0]);
-		for(int i = 1; i < stops.length; i++){
-			if (departingFrom != null && departingFrom.hasConnection(stops[i])) {
-				fuelCost += departingFrom.connectionFuelCost(stops[i]);
-				departingFrom = airports.get(stops[i]);
-			} else {
-				return -1;
-			}
-		}
-		return fuelCost;
-	}
-	
 	private void fromCSVPath(String csvPath) {
 		try {
 			fromCSVFile(new File(csvPath));
@@ -86,9 +71,9 @@ public class FlightPlanner {
 	}
 	
 	private void addFlight(String line){
-		Flight connection = Flight.flightFromLine(line);
+		Connection connection = Connection.connectionFromLine(line);
 		Airport airport = findOrCreateAirport(connection.getOrigin());
-		airport.addOrCreateConnection(connection, "direct");
+		airport.addConnection(connection);
 	}	
 	
 	private Airport findOrCreateAirport(String name){	

@@ -9,29 +9,29 @@ public class AirportTest {
 	
 	private Airport subjectWithConnection;
 	private Airport subjectWithoutConnection;	
-	private Flight sample_flight1;
-	private Flight sample_flight2;
-	private Flight sample_flight3;
-	private Flight sample_flight4;
+	private Connection sample_flight1;
+	private Connection sample_flight2;
+	private Connection sample_flight3;
+	private Connection sample_flight4;
 	
 	@Before
 	public void setUp() throws Exception {
 		subjectWithConnection = new Airport("Ohare");
-		sample_flight1 = new Flight("Ohare", "Dallas", 200);
-		sample_flight2 = new Flight("Ohare", "Phoneix", 350);
+		sample_flight1 = new Connection("Ohare", "Dallas", 200);
+		sample_flight2 = new Connection("Ohare", "Phoneix", 350);
 //		subjectWithConnection.addOrCreateConnection(sample_connection1, "direct");
 //		subjectWithConnection.addOrCreateConnection(sample_connection2, "direct");
 //		
 		subjectWithoutConnection = new Airport("Rockford");
-		sample_flight3 = new Flight("Rockford", "Leguardia", 250);
-		sample_flight4 = new Flight("Rockford", "Tampa", 300);
+		sample_flight3 = new Connection("Rockford", "Leguardia", 250);
+		sample_flight4 = new Connection("Rockford", "Tampa", 300);
 	}
 	
 	@Test
 	public void testAddOrCreateConnection(){
-		subjectWithoutConnection.addOrCreateConnection("direct", sample_flight3);
-		subjectWithoutConnection.addOrCreateConnection(sample_flight4);
-		assertTrue(subjectWithoutConnection.getConnection(sample_flight4));
+		subjectWithoutConnection.addConnection(sample_flight3);
+		subjectWithoutConnection.addConnection(sample_flight4);
+		assertTrue(subjectWithoutConnection.hasConnection(sample_flight4));
 	}
 
 //	@Test
