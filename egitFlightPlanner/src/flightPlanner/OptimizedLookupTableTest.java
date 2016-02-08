@@ -25,5 +25,10 @@ public class OptimizedLookupTableTest {
 //		assertEquals(9, subject.optimizedPath("B", "B", "fuel"));
 //	}
 //	
+	
+	@Test
+	public void testBuildOfLookupTable(){
+		assertEquals(5, subject.getListOfAirportNames().size());
+	}
 
 }

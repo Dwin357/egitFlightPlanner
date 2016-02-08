@@ -3,15 +3,17 @@ package flightPlanner;
 import java.util.HashMap;
 
 
-public class Airport {
+public class DestinationAirport {
 	
 	private HashMap<String, Connection> connections;
+	private HashMap<String, Layover> layovers;
 	private String name;
 
-	public Airport(String name) {
+	public DestinationAirport(String name) {
 		super();
 		this.name = name;
 		this.connections = new HashMap<String, Connection>();
+		this.layovers = new HashMap<String, Layover>();
 	}
 	
 	public boolean hasConnection(Connection subject){
@@ -30,10 +32,21 @@ public class Airport {
 		return connections;
 	}
 	
+	public HashMap<String, Layover> getLayovers(){
+		return layovers;
+	}
+	
 	public void addConnection(Connection connection){
 		getConnections().put(connection.getDestination(), connection);
 	}
 	
+	public void addLayover(Connection connection, String label){
+		getLayovers().put(label,  new Layover(connection));
+	}
+	
+	public Layover getLayover(String label){
+		return layovers.get(label);
+	}
 	
 	public String getName(){
 		return name;

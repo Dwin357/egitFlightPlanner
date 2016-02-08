@@ -5,10 +5,10 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AirportTest {
+public class DestinationAirportTest {
 	
-	private Airport subjectWithConnection;
-	private Airport subjectWithoutConnection;	
+	private DestinationAirport subjectWithConnection;
+	private DestinationAirport subjectWithoutConnection;	
 	private Connection sample_flight1;
 	private Connection sample_flight2;
 	private Connection sample_flight3;
@@ -16,13 +16,13 @@ public class AirportTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		subjectWithConnection = new Airport("Ohare");
+		subjectWithConnection = new DestinationAirport("Ohare");
 		sample_flight1 = new Connection("Ohare", "Dallas", 200);
 		sample_flight2 = new Connection("Ohare", "Phoneix", 350);
 //		subjectWithConnection.addOrCreateConnection(sample_connection1, "direct");
 //		subjectWithConnection.addOrCreateConnection(sample_connection2, "direct");
 //		
-		subjectWithoutConnection = new Airport("Rockford");
+		subjectWithoutConnection = new DestinationAirport("Rockford");
 		sample_flight3 = new Connection("Rockford", "Leguardia", 250);
 		sample_flight4 = new Connection("Rockford", "Tampa", 300);
 	}

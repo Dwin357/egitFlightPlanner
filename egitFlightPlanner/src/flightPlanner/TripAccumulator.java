@@ -8,9 +8,9 @@ import java.util.Set;
 
 
 public class TripAccumulator {
-	private HashMap<String, Airport> airports;
+	private HashMap<String, DestinationAirport> airports;
 
-	public TripAccumulator(HashMap<String, Airport> airports){
+	public TripAccumulator(HashMap<String, DestinationAirport> airports){
 		this.airports = airports;
 	}
 	
@@ -20,7 +20,7 @@ public class TripAccumulator {
 		String currentLocation = stops[0];
 		
 		for(int i=1; i < stops.length; i++){
-			Airport departingFrom = airports.get(currentLocation);
+			DestinationAirport departingFrom = airports.get(currentLocation);
 			Connection flight = departingFrom.getConnection(stops[i]);
 			if(flight == null){
 				return -1;
@@ -80,7 +80,7 @@ public class TripAccumulator {
 			}
 		} else {
 			if (Integer.parseInt(limit) > 0){
-				Airport flyingFrom = getAirports().get(origin);
+				DestinationAirport flyingFrom = getAirports().get(origin);
 				for(Map.Entry<String, Connection> connection : flyingFrom.getConnections().entrySet()){
 					String decrementedLimit = decrementLimit(limitingFeature, limit, connection.getValue());
 					viablePaths.addAll(
@@ -103,7 +103,7 @@ public class TripAccumulator {
 		return location;
 	}
 	
-	public void notateCurrentLocation(ArrayList<Layover> viablePaths, Airport flyingFrom){
+	public void notateCurrentLocation(ArrayList<Layover> viablePaths, DestinationAirport flyingFrom){
 		for(Layover path : viablePaths){
 			String layoverCity = path.getOrigin();
 			Connection flight = flyingFrom.getConnection(layoverCity);
@@ -125,7 +125,7 @@ public class TripAccumulator {
 	}
 	
 	
-	private HashMap<String, Airport> getAirports(){
+	private HashMap<String, DestinationAirport> getAirports(){
 		return airports;
 	}
 }

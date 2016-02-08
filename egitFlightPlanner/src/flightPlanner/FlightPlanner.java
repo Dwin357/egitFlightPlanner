@@ -14,12 +14,12 @@ import org.apache.commons.csv.CSVParser;
 
 public class FlightPlanner {
 	
-	private HashMap<String, Airport> airports;
+	private HashMap<String, DestinationAirport> airports;
 	private OptimizedLookupTable efficientRoutes;
 	
 	//////////////  remove when done ///////////////
 	
-	public HashMap<String, Airport> getAirports(){
+	public HashMap<String, DestinationAirport> getAirports(){
 		return airports;
 	}
 	
@@ -28,7 +28,7 @@ public class FlightPlanner {
 	
 	public FlightPlanner(String filePath) {
 		super();
-		airports = new HashMap<String, Airport>();
+		airports = new HashMap<String, DestinationAirport>();
 		fromCSVPath(filePath);
 		efficientRoutes = new OptimizedLookupTable(airports);
 		
@@ -36,7 +36,7 @@ public class FlightPlanner {
 	
 	public FlightPlanner(File file) {
 		super();
-		airports = new HashMap<String, Airport>();
+		airports = new HashMap<String, DestinationAirport>();
 		try {
 			fromCSVFile(file);
 		} catch (FileNotFoundException e){
@@ -72,14 +72,14 @@ public class FlightPlanner {
 	
 	private void addFlight(String line){
 		Connection connection = Connection.connectionFromLine(line);
-		Airport airport = findOrCreateAirport(connection.getOrigin());
+		DestinationAirport airport = findOrCreateAirport(connection.getOrigin());
 		airport.addConnection(connection);
 	}	
 	
-	private Airport findOrCreateAirport(String name){	
-		Airport airport = airports.get(name);
+	private DestinationAirport findOrCreateAirport(String name){	
+		DestinationAirport airport = airports.get(name);
 		if(airport == null){
-			airport = new Airport(name);
+			airport = new DestinationAirport(name);
 			airports.put(name, airport);
 		}	
 		return airport;
