@@ -1,1 +1,30 @@
-graph: HardCase300, NutCase1, HardNut30, CaseNut666, CaseHard38, IsolatedCase35, NutDesolate78
+<?xml version="1.0" encoding="UTF-8"?>
+
+<trainees 
+  xmlna="dwin357.github.io" 
+  xmlns:xsi="fdm.com" 
+  xsi:schemaLocation="dwin357.github.io trainees_schema.xml">
+
+
+  <trainee>
+    <firstname>Bob</firstname>
+    <lastname>Dole</lastname>
+    <university>U of Kansas</university>
+    <degree>pre-med</degree>
+    <date_of_graduation>1970-09-01</date_of_graduation>
+  </trainee>
+  <trainee>
+    <firstname>Bill</firstname>
+    <lastname>Clinton</lastname>
+    <university>U of Georgetown</university>
+    <degree>foreign service</degree>
+    <date_of_graduation>1968-09-01</date_of_graduation>
+  </trainee>
+  <trainee>
+    <firstname>Ross</firstname>
+    <lastname>Perot</lastname>
+    <university>Texarkana</university>
+    <degree>associates</degree>
+    <date_of_graduation>1949-09-01</date_of_graduation>
+  </trainee>
+</trainees>
